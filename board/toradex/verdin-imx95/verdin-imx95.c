@@ -35,6 +35,8 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
+extern int board_fix_fdt_fuse(void *fdt);
+
 int board_early_init_f(void)
 {
 	/* UART1: A55, UART2: M33, UART3: M7 */
@@ -379,6 +381,16 @@ int ft_board_setup(void *blob, struct bd_info *bd)
 	ret = fdt_fixup_memory_banks(blob, base, size, CONFIG_NR_DRAM_BANKS);
 	if (ret)
 		return ret;
+
+	return 0;
+}
+#endif
+
+#if IS_ENABLED(CONFIG_OF_BOARD_FIXUP)
+int board_fix_fdt(void *fdt)
+{
+	/* Remove nodes based on fuses. */
+	board_fix_fdt_fuse(fdt);
 
 	return 0;
 }
