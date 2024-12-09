@@ -1136,7 +1136,7 @@ int disable_lvds_node(void *blob)
 
 int ft_system_setup(void *blob, struct bd_info *bd)
 {
-	u32 val;
+	u32 val = 0;
 	int ret = 0;
 	int num_a55_cores_disabled = 0;
 	int gpu_disabled = 0;
