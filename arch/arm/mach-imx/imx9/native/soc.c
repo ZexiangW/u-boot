@@ -777,9 +777,10 @@ static int low_drive_fdt_fix_clock(void *fdt, int node_off, u32 clk_index,
 {
 #define MAX_ASSIGNED_CLKS 8
 	int cnt, j;
+	int cnt_parent;
 	int ret;
 	u32 assignedclks[MAX_ASSIGNED_CLKS]; /* max 8 clocks*/
-	u32 assignedparentclks[MAX_ASSIGNED_CLKS * 2];
+	u32 assignedparentclks[MAX_ASSIGNED_CLKS * 2] = {0};
 
 	cnt = fdtdec_get_int_array_count(fdt, node_off, "assigned-clock-rates",
 		assignedclks, MAX_ASSIGNED_CLKS);
@@ -787,8 +788,13 @@ static int low_drive_fdt_fix_clock(void *fdt, int node_off, u32 clk_index,
 		if (cnt <= clk_index)
 			return -ENOENT;
 
-		fdtdec_get_int_array_count(fdt, node_off, "assigned-clock-parents",
-					   assignedparentclks, MAX_ASSIGNED_CLKS * 2);
+		cnt_parent = fdtdec_get_int_array_count(fdt, node_off,
+							"assigned-clock-parents",
+							assignedparentclks,
+							MAX_ASSIGNED_CLKS * 2);
+
+		if (cnt_parent <= 0)
+			return -ENOENT;
 
 		assignedclks[clk_index] = new_rate;
 		if (new_parent)
