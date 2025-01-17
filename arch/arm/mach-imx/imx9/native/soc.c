@@ -844,6 +844,8 @@ static int low_drive_freq_update(void *blob)
 		{"/soc@0/lcd-controller@4ae30000", 3, 133333334, MEDIA_APB_PARENT},
 		{"/soc@0/bus@42800000/camera/isi@4ae40000", 0, 200000000, MEDIA_AXI_PARENT},
 		{"/soc@0/bus@42800000/camera/isi@4ae40000", 1, 133333334, MEDIA_APB_PARENT},
+		{"/soc@0/bus@42800000/isi@4ae40000", 0, 200000000, MEDIA_AXI_PARENT},
+		{"/soc@0/bus@42800000/isi@4ae40000", 1, 133333334, MEDIA_APB_PARENT},
 		{"/soc@0/bus@42800000/mmc@42850000", 0, 266666667},
 		{"/soc@0/bus@42800000/mmc@42860000", 0, 266666667},
 		{"/soc@0/bus@42800000/mmc@428b0000", 0, 266666667},
