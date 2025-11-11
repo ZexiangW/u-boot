@@ -265,16 +265,16 @@
 			native-mode = <&timing0>;
 
 			timing0: timing0 {
-				clock-frequency = <9200000>;
-				hactive = <480>;
-				vactive = <272>;
-				hfront-porch = <8>;
-				hback-porch = <4>;
-				hsync-len = <41>;
-				vback-porch = <2>;
-				vfront-porch = <4>;
-				vsync-len = <10>;
-				hsync-active = <0>;
+				clock-frequency = <33000000>;
+				hactive = <800>;
+				vactive = <400>;
+				hfront-porch = <40>;
+				hback-porch = <88>;
+				hsync-len = <15>;
+				vfront-porch = <88>;
+				vback-porch = <44>;
+				vsync-len = <23>;
+				hsync-active = <1>;
 				vsync-active = <0>;
 				de-active = <1>;
 				pixelclk-active = <0>;
