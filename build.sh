@@ -1,35 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SDK_ENV="/opt/fsl-framebuffer/5.0-snapshot-20260716/environment-setup-cortexa7t2hf-neon-fsl-linux-gnueabi"
-JOBS="${JOBS:-8}"
-TARGET="${1:-u-boot.imx}"
-
-if [[ ! -f "$SDK_ENV" ]]; then
-  echo "SDK environment not found: $SDK_ENV" >&2
+if [[ -z "${ARCH:-}" || -z "${CROSS_COMPILE:-}" ]]; then
+  echo "Please source envsetup.sh first." >&2
   exit 1
 fi
 
-# shellcheck disable=SC1090
-source "$SDK_ENV"
-
-export ARCH=arm
-export CROSS_COMPILE="$TARGET_PREFIX"
-
-# The Yocto SDK exports target compiler/sysroot flags via CC/CFLAGS/etc.
-# U-Boot also builds host tools, so keep those tools on the VM native toolchain.
-unset CC CXX CPP LD AS AR NM STRIP OBJCOPY OBJDUMP READELF
-unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
-unset PKG_CONFIG_SYSROOT_DIR PKG_CONFIG_PATH PKG_CONFIG_LIBDIR
-
-export HOSTCC=gcc
-export HOSTCXX=g++
-export HOSTSTRIP=strip
-
-echo "ARCH=$ARCH"
-echo "CROSS_COMPILE=$CROSS_COMPILE"
-echo "HOSTCC=$HOSTCC"
-echo "TARGET=$TARGET"
-echo "JOBS=$JOBS"
-
-make "$TARGET" -j"$JOBS"
+make mx6ull_xirang_defconfig
+make u-boot.imx -j 8

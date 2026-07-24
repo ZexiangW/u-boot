@@ -15,7 +15,7 @@ CONFIG_DM_GPIO=y
 CONFIG_DEFAULT_DEVICE_TREE="imx6ull-xirang-emmc"
 CONFIG_SUPPORT_RAW_INITRD=y
 CONFIG_USE_BOOTCOMMAND=y
-CONFIG_BOOTCOMMAND="run findfdt;mmc dev ${mmcdev};mmc dev ${mmcdev}; if mmc rescan; then if run loadbootscript; then run bootscript; else if run loadimage; then run mmcboot; else run netboot; fi; fi; else run netboot; fi"
+CONFIG_BOOTCOMMAND="mmc dev ${mmcdev}; if mmc rescan; then if gpt setenv mmc ${mmcdev} boot; then mmc read ${loadaddr} ${gpt_partition_addr} ${gpt_partition_size}; bootm ${loadaddr}; fi; fi"
 CONFIG_BOOTDELAY=3
 # CONFIG_CONSOLE_MUX is not set
 CONFIG_SYS_CONSOLE_IS_IN_ENV=y
