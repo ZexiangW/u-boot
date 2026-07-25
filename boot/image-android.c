@@ -810,7 +810,7 @@ int android_image_get_ramdisk(const void *hdr, const void *vendor_boot_img,
 
 	if (!img_data.ramdisk_size) {
 		*rd_data = *rd_len = 0;
-		return -1;
+		return 0;
 	}
 	if (img_data.header_version > 2) {
 		ramdisk_ptr = img_data.ramdisk_ptr;
