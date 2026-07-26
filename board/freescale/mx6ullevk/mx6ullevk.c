@@ -45,6 +45,26 @@ DECLARE_GLOBAL_DATA_PTR;
 			PAD_CTL_SRE_FAST)
 #define GPMI_PAD_CTRL2 (GPMI_PAD_CTRL0 | GPMI_PAD_CTRL1)
 
+#define FASTBOOT_KEY_GPIO	IMX_GPIO_NR(1, 18)
+
+static iomux_v3_cfg_t const fastboot_key_pads[] = {
+	MX6_PAD_UART1_CTS_B__GPIO1_IO18 | MUX_PAD_CTRL(NO_PAD_CTRL),
+};
+
+static void check_fastboot_key(void)
+{
+	imx_iomux_v3_setup_multiple_pads(fastboot_key_pads,
+					 ARRAY_SIZE(fastboot_key_pads));
+	gpio_request(FASTBOOT_KEY_GPIO, "fastboot key");
+	gpio_direction_input(FASTBOOT_KEY_GPIO);
+
+	if (!gpio_get_value(FASTBOOT_KEY_GPIO)) {
+		printf("Fastboot key pressed, entering fastboot mode...\n");
+		env_set("bootcmd", "fastboot 0");
+		env_set("bootdelay", "0");
+	}
+}
+
 
 #ifdef CONFIG_DM_PMIC
 int power_init_board(void)
@@ -341,6 +361,8 @@ int board_late_init(void)
 #endif
 
 	set_wdog_reset((struct wdog_regs *)WDOG1_BASE_ADDR);
+
+	check_fastboot_key();
 
 	return 0;
 }
